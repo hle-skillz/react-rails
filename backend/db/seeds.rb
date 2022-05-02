@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+(1..1000).each do |i|
+  u = User.create(name: "bob-#{i}", email: "bob-#{i}@example.com")
+  u.notes.create(category: :request, note: "bob-#{i} requested help")
+  u.notes.create(category: :comment, note: "bob-#{i} made a comment")
+  u.notes.create(category: :alert, note: "bob-#{i} triggered an alert")
+end

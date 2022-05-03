@@ -9,6 +9,7 @@ class NotesGrid
   filter(:user_id, :integer)
 
   column(:user_id)
-  column(:created_at)
+  column(:id)
+  column(:category)
 
 end

@@ -12,7 +12,7 @@ class NotesController < ApplicationController
     # kaminari adds pagination of results
     @notes = @grid
                .assets # apply grid filter/sort
-               .page(params[:page]).per(params[:page_size]) # pagination
+               .page(params[:page]).per(params[:pageSize]) # pagination
 
     render json: {
       data: @notes, # current page

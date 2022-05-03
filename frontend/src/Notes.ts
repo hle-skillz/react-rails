@@ -9,19 +9,21 @@ export interface NoteResponse {
     total: number;
 }
 
+// make backend camelCase for convenience, apply kebab/snake mapper if bored
 interface QueryParams {
     page: number;
     pageSize: number;
+    order: string;
+    descending: boolean;
 }
 
 function getNotes(params: QueryParams) {
+    params.page = params.page + 1; // kaminari uses 1-indexes
+    
     return axios.get<NoteResponse>(
         'http://localhost:3000/notes',
         {
-            params: {
-                page: params.page + 1, // kaminari uses 1-indexes
-                page_size: params.pageSize
-            }
+            params
         }).then(r => r.data);
 }
 

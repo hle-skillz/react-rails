@@ -3,9 +3,21 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
-    @notes = Note.all
+    # datagrid converts sort/filter query parameters to queries
+    @grid = NotesGrid.new(params.slice(
+      :category, :user_id, # filter params
+      :order, :descending # sort params
+    ))
 
-    render json: @notes
+    # kaminari adds pagination of results
+    @notes = @grid
+               .assets # apply grid filter/sort
+               .page(params[:page]).per(params[:page_size]) # pagination
+
+    render json: {
+      data: @notes, # current page
+      total: @notes.total_count # all pages
+    }
   end
 
   # GET /notes/1

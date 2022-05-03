@@ -7,9 +7,13 @@ export enum NoteCategory {
 }
 
 export const noteSchema = object({
-    user_id: number().required(),
+    user_id: number().min(1).max(1000).required(),
     category: string().oneOf(Object.values(NoteCategory)).required(),
-    note: string(),
+    note: string()
+        .matches(
+            /.*PASSWORD.*/,
+            {message: 'must contain top secret word', excludeEmptyString: true}
+        )
 })
 
 export type Note = InferType<typeof noteSchema>;

@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import './App.css';
 import {Note} from "./Note";
 import {useNotes} from "./NotesQuery";
-import {CircularProgress} from "@mui/material";
+import {Button, CircularProgress, Dialog, Stack} from "@mui/material";
 import {DataGrid, GridColDef, GridSortModel} from "@mui/x-data-grid";
+import {NoteForm} from "./NoteForm";
 
 const noteColumns : GridColDef[] = [
     {field: 'id', headerName: 'ID', sortable: true},
@@ -34,6 +35,7 @@ function App() {
   });
 
   return (
+    <Stack>
     <div className="App">
         {notes.isLoading && <Loading/>}
         {notes.isSuccess && <DataGrid
@@ -46,6 +48,8 @@ function App() {
             sortModel={sortModel} onSortModelChange={sortModelChanged}
         />}
     </div>
+    <NoteForm/>
+    </Stack>
   );
 }
 

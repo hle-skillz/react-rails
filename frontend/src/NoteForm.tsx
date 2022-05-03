@@ -4,9 +4,8 @@ import {NoteCategory, noteSchema} from "./Note";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ErrorMessage} from '@hookform/error-message';
 
-// TODO: can probably pass enum
-function options() {
-    return Object.values(NoteCategory).map((option) => (
+function enumOptions(enums : Record<string, string>) {
+    return Object.values(enums).map((option) => (
         <MenuItem key={option} value={option}>{option}</MenuItem>
     ));
 }
@@ -33,7 +32,7 @@ export function NoteForm() {
                 name='category'
                 render={({field: {onChange, value}}) => (
                     <Select onChange={onChange} value={value}>
-                        {options()}
+                        {enumOptions(NoteCategory)}
                     </Select>
                 )}
             />

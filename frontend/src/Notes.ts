@@ -9,11 +9,23 @@ export interface NoteResponse {
     total: number;
 }
 
-
-function getNotes() {
-    return axios.get<NoteResponse>('http://localhost:3000/notes').then(r => r.data);
+interface QueryParams {
+    page: number;
+    pageSize: number;
 }
 
-export function useNotes() {
-    return useQuery([NOTES], getNotes);
+function getNotes(params: QueryParams) {
+    return axios.get<NoteResponse>(
+        'http://localhost:3000/notes',
+        {
+            params: {
+                page: params.page + 1, // kaminari uses 1-indexes
+                page_size: params.pageSize
+            }
+        }).then(r => r.data);
+}
+
+
+export function useNotes(params : QueryParams) {
+    return useQuery([NOTES, params], () => getNotes(params));
 }

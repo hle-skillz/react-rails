@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Note} from "./Note";
 import {useNotes} from "./Notes";
@@ -13,12 +13,16 @@ const noteColumns : GridColDef[] = [
 ]
 
 function App() {
-  /*
-  Don't destructure the useQuery() results:
-  1. If there's more than one query, the grouping is more clear.
-  2. Discriminated types! 'isSuccess == true' lets you access 'data' without null-check.
-   */
-  const notes = useNotes();
+
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+
+    /*
+    Don't destructure the useQuery() results:
+    1. If there's more than one query, the grouping is more clear.
+    2. Discriminated types! 'isSuccess == true' lets you access 'data' without null-check.
+     */
+  const notes = useNotes({page, pageSize});
 
   return (
     <div className="App">
@@ -26,7 +30,9 @@ function App() {
         {notes.isSuccess && <DataGrid
             columns={noteColumns}
             rows={notes.data.data} rowCount={notes.data.total}
-            pageSize={10}
+            pageSize={pageSize}
+            paginationMode='server'
+            page={page} onPageChange={(page) => setPage(page)}
         />}
     </div>
   );

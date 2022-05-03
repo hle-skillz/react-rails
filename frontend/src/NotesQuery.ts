@@ -2,7 +2,7 @@ import {useQuery} from "react-query";
 import axios from "axios";
 import {Note} from "./Note";
 
-const NOTES = 'NOTES';
+const NotesQuery = 'notes';
 
 export interface NoteResponse {
     data: Note[];
@@ -29,5 +29,5 @@ function getNotes(params: QueryParams) {
 
 
 export function useNotes(params : QueryParams) {
-    return useQuery([NOTES, params], () => getNotes(params));
+    return useQuery([NotesQuery, params], () => getNotes(params));
 }

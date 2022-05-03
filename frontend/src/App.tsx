@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Note} from "./Note";
-import {useNotes} from "./Notes";
+import {useNotes} from "./NotesQuery";
 import {CircularProgress} from "@mui/material";
 import {DataGrid, GridColDef, GridSortModel} from "@mui/x-data-grid";
 

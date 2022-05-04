@@ -31,7 +31,8 @@ const noteKeys = {
 type Params = QueryFunctionContext<ReturnType<typeof noteKeys['list']>>;
 
 function getNotes({queryKey: [{params}]} : Params) {
-    params.page = params.page + 1; // kaminari uses 1-indexes
+
+    params = {...params, page: params.page + 1}; // kaminari uses 1-indexes
     
     return axios.get<NoteResponse>(
         'http://localhost:3000/notes',

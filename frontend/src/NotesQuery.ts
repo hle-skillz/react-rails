@@ -2,10 +2,12 @@ import {QueryFunctionContext, useMutation, useQuery, useQueryClient} from "react
 import axios from "axios";
 import {AddNote, Note, NoteCategory} from "./Note";
 
-export interface NoteResponse {
-    data: Note[];
+export interface PageResponse<T> {
+    data: T[];
     total: number;
 }
+
+export type NoteResponse = PageResponse<NoteResponse>;
 
 // make backend camelCase for convenience, apply kebab/snake mapper if bored
 interface QueryParams {

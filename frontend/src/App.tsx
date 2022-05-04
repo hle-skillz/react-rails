@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
 import {NoteCategory} from "./Note";
-import {useNotes} from "./NotesQuery";
+import {PageResponse, useNotes} from "./NotesQuery";
 import {CircularProgress, Stack} from "@mui/material";
 import {
     DataGrid,
@@ -13,6 +13,7 @@ import {
     GridSortModel
 } from "@mui/x-data-grid";
 import {NoteForm} from "./NoteForm";
+import {UseQueryResult} from "react-query";
 
 console.log(getGridSingleSelectOperators())
 
@@ -26,6 +27,14 @@ const noteColumns : GridColDef[] = [
     },
     {field: 'note', type: 'string', headerName: 'Note', width: 400, sortable: false, filterable: false},
 ]
+
+function fromQuery<T extends PageResponse<any>>(queryResult : UseQueryResult<T, unknown>) {
+    return {
+        loading: queryResult.isLoading,
+        rows: queryResult.data?.data || [],
+        rowCount: queryResult.data?.total || 0
+    }
+}
 
 function App() {
 
@@ -62,9 +71,8 @@ function App() {
         { notes.isLoading && <CircularProgress/>}
         { notes.isSuccess && <p>{notes.data.data.length} rows</p>}
         <DataGrid
-            loading={notes.isLoading}
+            {...fromQuery(notes)}
             columns={noteColumns}
-            rows={notes.data?.data || []} rowCount={notes.data?.total || 0}
             pageSize={pageSize}
             paginationMode='server'
             page={page} onPageChange={pageChanged}

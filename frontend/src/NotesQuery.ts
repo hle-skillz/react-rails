@@ -1,6 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
-import {Note} from "./Note";
+import {AddNote, Note} from "./Note";
 
 const NotesQuery = 'notes';
 
@@ -32,7 +32,7 @@ export function useNotes(params : QueryParams) {
     return useQuery([NotesQuery, params], () => getNotes(params));
 }
 
-function addNote(note: Note) {
+function addNote(note: AddNote) {
     return axios.post('http://localhost:3000/notes', note)
 }
 

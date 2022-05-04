@@ -16,4 +16,8 @@ export const noteSchema = object({
         )
 })
 
-export type Note = InferType<typeof noteSchema>;
+export type AddNote = InferType<typeof noteSchema>;
+
+export interface Note extends AddNote {
+    id: number;
+}

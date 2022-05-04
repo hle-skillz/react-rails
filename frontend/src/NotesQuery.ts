@@ -1,6 +1,6 @@
 import {QueryFunctionContext, useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
-import {AddNote, Note} from "./Note";
+import {AddNote, Note, NoteCategory} from "./Note";
 
 export interface NoteResponse {
     data: Note[];
@@ -13,6 +13,8 @@ interface QueryParams {
     pageSize: number;
     order: string;
     descending: boolean;
+    user_id: number | null;
+    category: NoteCategory | null;
 }
 
 // https://tkdodo.eu/blog/leveraging-the-query-function-context#query-key-factories

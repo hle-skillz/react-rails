@@ -1,8 +1,6 @@
-import {useMutation, useQuery, useQueryClient} from "react-query";
+import {QueryFunctionContext, useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 import {AddNote, Note} from "./Note";
-
-const NotesQuery = 'notes';
 
 export interface NoteResponse {
     data: Note[];
@@ -19,12 +17,16 @@ interface QueryParams {
 
 // https://tkdodo.eu/blog/leveraging-the-query-function-context#query-key-factories
 const noteKeys = {
-    all: ['notes'] as const,
-    lists: () => [...noteKeys.all, 'list'] as const,
-    list: (params: QueryParams) => [...noteKeys.lists(), params] as const
+    all: [{scope: 'notes'}] as const,
+    lists: () => [{...noteKeys.all, entity: 'list'}] as const,
+    list: (params: QueryParams) => [{...noteKeys.lists()[0], params}] as const
 }
 
-function getNotes(params: QueryParams) {
+// Dying from types, go ask David.
+// https://tkdodo.eu/blog/leveraging-the-query-function-context#object-query-keys
+type Params = QueryFunctionContext<ReturnType<typeof noteKeys['list']>>;
+
+function getNotes({queryKey: [{params}]} : Params) {
     params.page = params.page + 1; // kaminari uses 1-indexes
     
     return axios.get<NoteResponse>(
@@ -35,7 +37,7 @@ function getNotes(params: QueryParams) {
 }
 
 export function useNotes(params : QueryParams) {
-    return useQuery(noteKeys.list(params), () => getNotes(params));
+    return useQuery(noteKeys.list(params), getNotes);
 }
 
 function addNote(note: AddNote) {

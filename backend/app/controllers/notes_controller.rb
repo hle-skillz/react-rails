@@ -3,6 +3,7 @@ class NotesController < ApplicationController
 
   # GET /notes
   def index
+    sleep(3);
     # datagrid converts sort/filter query parameters to queries
     @grid = NotesGrid.new(params.slice(
       :category, :user_id, # filter params

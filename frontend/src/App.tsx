@@ -52,31 +52,31 @@ function App() {
       category: filterModel.items.find(i=> i.columnField === 'category')?.value
   });
 
+  /* https://tkdodo.eu/blog/react-query-and-type-script#type-narrowing
+     notes.isSuccess==true allows TypeScript to know notes.data is defined
+     Unfortunately DataGrid.loading doesn't trigger that check so DataGrid.rows still needs defaults.
+   */
   return (
     <Stack>
     <div className="App">
-        {notes.isLoading && <Loading/>}
-        {notes.isSuccess && <DataGrid
+        { notes.isLoading && <CircularProgress/>}
+        { notes.isSuccess && <p>{notes.data.data.length} rows</p>}
+        <DataGrid
+            loading={notes.isLoading}
             columns={noteColumns}
-            rows={notes.data.data} rowCount={notes.data.total}
+            rows={notes.data?.data || []} rowCount={notes.data?.total || 0}
             pageSize={pageSize}
             paginationMode='server'
             page={page} onPageChange={pageChanged}
             sortingMode='server'
             sortModel={sortModel} onSortModelChange={sortModelChanged}
             filterMode='server'
-            onFilterModelChange={filterModelChanged}
-        />}
+            filterModel={filterModel} onFilterModelChange={filterModelChanged}
+        />
     </div>
     <NoteForm/>
     </Stack>
   );
-}
-
-function Loading() {
-    return (
-        <CircularProgress/>
-    )
 }
 
 export default App;

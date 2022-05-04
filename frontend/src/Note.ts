@@ -1,4 +1,4 @@
-import {object, string, number, date, InferType, ObjectSchema} from 'yup';
+import {object, string, number, InferType} from 'yup';
 
 export enum NoteCategory {
     request = 'request',

@@ -1,6 +1,6 @@
 import {Button, CircularProgress, MenuItem, Select, Stack, TextField} from "@mui/material";
 import {useForm, Controller, SubmitHandler} from "react-hook-form";
-import {AddNote, Note, NoteCategory, noteSchema} from "./Note";
+import {AddNote, NoteCategory, noteSchema} from "./Note";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ErrorMessage} from '@hookform/error-message';
 import {useAddNote} from "./NotesQuery";

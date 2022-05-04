@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import './App.css';
-import {Note, NoteCategory} from "./Note";
+import {NoteCategory} from "./Note";
 import {useNotes} from "./NotesQuery";
 import {CircularProgress, Stack} from "@mui/material";
 import {
@@ -19,10 +19,10 @@ console.log(getGridSingleSelectOperators())
 const noteColumns : GridColDef[] = [
     {field: 'id', type: 'number', headerName: 'ID', sortable: true, filterable: false},
     {field: 'user_id', type: 'number', headerName: 'User', sortable: true,
-        filterOperators: getGridNumericOperators().filter((op) => op.value == '=')},
+        filterOperators: getGridNumericOperators().filter((op) => op.value === '=')},
     {field: 'category', type: 'singleSelect', headerName: 'Category', sortable: true,
         valueOptions: Object.values(NoteCategory),
-        filterOperators: getGridSingleSelectOperators().filter((op) => op.value == 'is')
+        filterOperators: getGridSingleSelectOperators().filter((op) => op.value === 'is')
     },
     {field: 'note', type: 'string', headerName: 'Note', width: 400, sortable: false, filterable: false},
 ]
@@ -30,7 +30,7 @@ const noteColumns : GridColDef[] = [
 function App() {
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'id', sort: 'asc'}]);
   const [filterModel, setFilterModel] = useState<GridFilterModel>({items:[], linkOperator: GridLinkOperator.And})
 
@@ -47,9 +47,9 @@ function App() {
       page,
       pageSize,
       order: sortModel[0]?.field,
-      descending: sortModel[0]?.sort == 'desc',
-      user_id: filterModel.items.find(i=> i.columnField == 'user_id')?.value,
-      category: filterModel.items.find(i=> i.columnField == 'category')?.value
+      descending: sortModel[0]?.sort === 'desc',
+      user_id: filterModel.items.find(i=> i.columnField === 'user_id')?.value,
+      category: filterModel.items.find(i=> i.columnField === 'category')?.value
   });
 
   return (

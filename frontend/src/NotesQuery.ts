@@ -1,4 +1,4 @@
-import {useQuery} from "react-query";
+import {useMutation, useQuery, useQueryClient} from "react-query";
 import axios from "axios";
 import {Note} from "./Note";
 
@@ -30,4 +30,18 @@ function getNotes(params: QueryParams) {
 
 export function useNotes(params : QueryParams) {
     return useQuery([NotesQuery, params], () => getNotes(params));
+}
+
+function addNote(note: Note) {
+    return axios.post('http://localhost:3000/notes', note)
+}
+
+export function useAddNote() {
+    const queryClient = useQueryClient();
+
+    return useMutation(addNote, {
+        onSuccess: (data, variables, context) => {
+            queryClient.invalidateQueries([NotesQuery]);
+        },
+    })
 }

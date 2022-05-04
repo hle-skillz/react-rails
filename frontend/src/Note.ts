@@ -7,7 +7,7 @@ export enum NoteCategory {
 }
 
 export const noteSchema = object({
-    user_id: number().min(1).max(1000).required(),
+    user_id: number().min(1).max(10000).required(),
     category: string().oneOf(Object.values(NoteCategory)).required(),
     note: string()
         .matches(

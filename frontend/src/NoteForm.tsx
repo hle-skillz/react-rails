@@ -1,8 +1,9 @@
-import {Button, MenuItem, Select, Stack, TextField} from "@mui/material";
-import {useForm, Controller} from "react-hook-form";
-import {NoteCategory, noteSchema} from "./Note";
+import {Button, CircularProgress, MenuItem, Select, Stack, TextField} from "@mui/material";
+import {useForm, Controller, SubmitHandler} from "react-hook-form";
+import {Note, NoteCategory, noteSchema} from "./Note";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {ErrorMessage} from '@hookform/error-message';
+import {useAddNote} from "./NotesQuery";
 
 function enumOptions(enums : Record<string, string>) {
     return Object.values(enums).map((option) => (
@@ -11,10 +12,21 @@ function enumOptions(enums : Record<string, string>) {
 }
 
 export function NoteForm() {
-    const {register, handleSubmit, control, formState: {errors}} = useForm({
+    const {register, handleSubmit, control, formState: {errors}} = useForm<Note>({
         resolver: yupResolver(noteSchema)
     });
-    const onSubmit = (data: any) => alert(JSON.stringify(data));
+    const addNote = useAddNote();
+
+    const onSubmit: SubmitHandler<Note> = (data) => {
+        addNote.mutate(data, {
+            onSuccess: (data, variables, context) => {
+                alert('Created new note!');
+            }
+        });
+    }
+
+    if (addNote.isLoading)
+        return <CircularProgress/>
 
     return (<form onSubmit={handleSubmit(onSubmit)}>
         <Stack>

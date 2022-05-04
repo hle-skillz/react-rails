@@ -17,6 +17,13 @@ interface QueryParams {
     descending: boolean;
 }
 
+// https://tkdodo.eu/blog/leveraging-the-query-function-context#query-key-factories
+const noteKeys = {
+    all: ['notes'] as const,
+    lists: () => [...noteKeys.all, 'list'] as const,
+    list: (params: QueryParams) => [...noteKeys.lists(), params] as const
+}
+
 function getNotes(params: QueryParams) {
     params.page = params.page + 1; // kaminari uses 1-indexes
     
@@ -27,9 +34,8 @@ function getNotes(params: QueryParams) {
         }).then(r => r.data);
 }
 
-
 export function useNotes(params : QueryParams) {
-    return useQuery([NotesQuery, params], () => getNotes(params));
+    return useQuery(noteKeys.list(params), () => getNotes(params));
 }
 
 function addNote(note: AddNote) {
@@ -41,7 +47,7 @@ export function useAddNote() {
 
     return useMutation(addNote, {
         onSuccess: (data, variables, context) => {
-            queryClient.invalidateQueries([NotesQuery]);
+            queryClient.invalidateQueries(noteKeys.all);
         },
     })
 }

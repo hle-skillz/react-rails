@@ -1,5 +1,11 @@
 # react-rails
 
+This repository should be an example of our latest best (laziest) practices.
+When a feature team is contributing a new page to Admin Portal V2, point them
+here so they avoid all the mistakes we made writing when writing V1.
+
+It's for for this to just be links as its pointless to maintain our own poor paraphrasing of high-quality crowd-sourced documentation.
+
 See READMEs in backend/frontend for run/install instructions.
 
 Laziness Philosophy:

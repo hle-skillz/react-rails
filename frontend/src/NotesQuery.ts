@@ -22,6 +22,8 @@ const noteKeys = {
     all: [{scope: 'notes'}] as const,
     lists: () => [{...noteKeys.all, entity: 'list'}] as const,
     list: (params: QueryParams) => [{...noteKeys.lists()[0], params}] as const
+    // can define query keys for show(id), allows invalidating all lists or individual items
+    // in case items contain more fields than list
 }
 
 // Dying from types, go ask David.
@@ -38,6 +40,7 @@ function getNotes({queryKey: [{params}]} : Params) {
         }).then(r => r.data);
 }
 
+// https://react-query.tanstack.com/typescript#defining-custom-hooks
 export function useNotes(params : QueryParams) {
     return useQuery(noteKeys.list(params), getNotes);
 }
